@@ -3,7 +3,7 @@ package com.s4n
 import sbt._
 import Keys._
 import sbtrelease._
-import ReleaseStateTransformations.{setReleaseVersion => _, _}
+import ReleaseStateTransformations.{ setReleaseVersion => _, _ }
 import ReleasePlugin.autoImport._
 import ReleaseTransformations._
 import Utilities._

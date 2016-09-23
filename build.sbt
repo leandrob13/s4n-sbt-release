@@ -1,3 +1,10 @@
+
+
+//lazy val `sbt-s4n-release` = project in file(".")
+lazy val `sbt-s4n-release` = (project in file(".")).enablePlugins(S4nReleasePlugin)
+import sbt._
+//import S4nReleasePlugin._
+
 sbtPlugin := true
 
 //Change to your organization
@@ -5,9 +12,6 @@ organization := "com.s4n"
 
 //Change to your plugin name
 name := """sbt-s4n-release"""
-
-//Change to the version
-version := "0.1.0-SNAPSHOT"
 
 scalaVersion := "2.10.4"
 //scalaVersion := "2.11.8"
@@ -22,8 +26,7 @@ resolvers ++= Seq(
   "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases",
   "sbt-bintray" at "http://dl.bintray.com/sbt/sbt-plugin-releases",
   "Typesafe Releases" at "http://repo.typesafe.com/typesafe/maven-releases",
-  "MVN Repository" at "http://central.maven.org/maven2",
-  Resolver.sonatypeRepo("releases")
+  "MVN Repository" at "http://central.maven.org/maven2"
 )
 
 // Change this to another test framework if you prefer

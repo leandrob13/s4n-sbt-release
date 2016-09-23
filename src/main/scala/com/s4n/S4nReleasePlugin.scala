@@ -11,14 +11,21 @@ import sbtbuildinfo._
  */
 object S4nReleasePlugin extends AutoPlugin {
   import ReleasePlugin.autoImport._
-  import BuildInfoPlugin.autoImport._
+  import scalariform.formatter.preferences._
+  import com.typesafe.sbt.SbtScalariform._
 
   /**
    * Defines all settings/tasks that get automatically imported,
    * when the plugin is enabled
    */
-  object autoImport {
-    val hello = inputKey[Unit]("Prints Hello")
+  object autoImport extends BuildInfoKeys {
+    val BuildInfoKey = sbtbuildinfo.BuildInfoKey
+    type BuildInfoKey = sbtbuildinfo.BuildInfoKey
+    val BuildInfoOption = sbtbuildinfo.BuildInfoOption
+    type BuildInfoOption = sbtbuildinfo.BuildInfoOption
+    val BuildInfoType = sbtbuildinfo.BuildInfoType
+    type BuildInfoType = sbtbuildinfo.BuildInfoType
+    val addBuildInfoToConfig = BuildInfoPlugin.buildInfoScopedSettings _
   }
 
   import autoImport._
@@ -34,19 +41,22 @@ object S4nReleasePlugin extends AutoPlugin {
 
   override def trigger = allRequirements
 
-  override def projectSettings: Seq[Setting[_]] = Seq(
+  override def projectSettings: Seq[Setting[_]] = BuildInfoPlugin.buildInfoScopedSettings(Compile) ++ Seq(
+    buildInfoObject := "BuildInfo",
+    buildInfoPackage := "buildinfo",
+    buildInfoUsePackageAsPath := false,
+    buildInfoBuildNumber := BuildInfoPlugin.buildNumberTask(baseDirectory.value, 1),
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
-    buildInfoPackage := "co.com.sura.build",
-    buildInfoOptions ++= Seq(BuildInfoOption.ToJson, BuildInfoOption.BuildTime),
+    buildInfoOptions := Seq(BuildInfoOption.ToJson, BuildInfoOption.BuildTime),
     buildInfoKeys += BuildInfoKey.action("revision") {
       git.gitHeadCommit.value.getOrElse("Could not evaluate")
     },
     git.useGitDescribe := true,
     git.baseVersion := version.value,
     git.gitTagToVersionNumber := {
-      case VersionRegex(v,"") => Some(v)
-      case VersionRegex(v,"SNAPSHOT") => Some(s"$v-SNAPSHOT")
-      case VersionRegex(v,s) => Some(s"$v-$s-SNAPSHOT")
+      case VersionRegex(v, "") => Some(v)
+      case VersionRegex(v, "SNAPSHOT") => Some(s"$v-SNAPSHOT")
+      case VersionRegex(v, s) => Some(s"$v-$s-SNAPSHOT")
       case _ => None
     },
     releaseSnapshotDependencies := {
@@ -54,7 +64,6 @@ object S4nReleasePlugin extends AutoPlugin {
       val snapshots = moduleIds.filter(m => m.isChanging || m.revision.endsWith("-SNAPSHOT"))
       snapshots
     },
-
     releaseVersion := { ver => Version(ver).map(_.withoutQualifier.string).getOrElse(versionFormatError) },
     releaseVersionBump := Version.Bump.default,
     releaseNextVersion := {
@@ -62,18 +71,13 @@ object S4nReleasePlugin extends AutoPlugin {
     },
     releaseUseGlobalVersion := true,
     releaseCrossBuild := false,
-
     releaseTagName := s"v${if (releaseUseGlobalVersion.value) (version in ThisBuild).value else version.value}",
     releaseTagComment := s"Releasing ${if (releaseUseGlobalVersion.value) (version in ThisBuild).value else version.value}",
     releaseCommitMessage := s"Setting version to ${if (releaseUseGlobalVersion.value) (version in ThisBuild).value else version.value}",
-
     releaseVcs := Vcs.detect(baseDirectory.value),
     //releaseVcsSign := false,
-
     releaseVersionFile := baseDirectory.value / "version.sbt",
-
     releasePublishArtifactsAction := publish.value,
-
     releaseIgnoreUntrackedFiles := false,
     releaseProcess := Seq[ReleaseStep](
       checkSnapshotDependencies,
@@ -85,7 +89,17 @@ object S4nReleasePlugin extends AutoPlugin {
       setAndCommitNextVersion,
       pushChanges
     ),
-    commands += releaseCommand
+    commands += releaseCommand,
+
+    ScalariformKeys.preferences := ScalariformKeys.preferences.value
+      .setPreference(AlignSingleLineCaseStatements, true)
+      .setPreference(DoubleIndentClassDeclaration, true)
+      .setPreference(DanglingCloseParenthesis, Force)
+      .setPreference(AlignParameters, true)
+      .setPreference(CompactControlReadability, true)
+      //.setPreference(SpaceInsideBrackets, false)
+      .setPreference(SpaceInsideParentheses, true)
+      .setPreference(SpacesWithinPatternBinders, true)
   )
 
 }

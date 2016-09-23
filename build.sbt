@@ -49,12 +49,12 @@ scriptedLaunchOpts += "-Dproject.version=" + version.value
 
 fork in run := true
 
-credentials += Credentials("Sonatype Nexus Repository Manager", "nexus.seven4n.com", "sura_cotizadores", "sura_cotizadores")
-
+credentials += Credentials("Sonatype Nexus Repository Manager", "nexus.seven4n.com", "s4nbase", "s4nbase")
+//http://nexus.seven4n.com/content/repositories/s4n-base-releases/
 publishTo := {
   val nexus = "http://nexus.seven4n.com/"
   if (version.value.trim.endsWith("SNAPSHOT"))
-    Some("S4N Nexus Snapshots" at nexus + "content/repositories/sura_cotizadores_snapshot/")
+    Some("S4N Nexus Snapshots" at nexus + "content/repositories/s4n-base-snapshot/")
   else
-    Some("S4N Nexus Releases" at nexus + "content/repositories/sura_cotizadores_release/")
+    Some("S4N Nexus Releases" at nexus + "content/repositories/s4n-base-releases/")
 }

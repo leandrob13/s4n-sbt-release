@@ -41,40 +41,40 @@ object S4nReleasePlugin extends AutoPlugin {
 
   override def trigger = allRequirements
 
-  override def projectSettings: Seq[Setting[_]] = BuildInfoPlugin.buildInfoScopedSettings(Compile) ++ Seq(
+  override def projectSettings: Seq[Setting[_]] = BuildInfoPlugin.buildInfoScopedSettings( Compile ) ++ Seq(
     buildInfoObject := "BuildInfo",
     buildInfoPackage := "buildinfo",
     buildInfoUsePackageAsPath := false,
-    buildInfoBuildNumber := BuildInfoPlugin.buildNumberTask(baseDirectory.value, 1),
-    buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
-    buildInfoOptions := Seq(BuildInfoOption.ToJson, BuildInfoOption.BuildTime),
-    buildInfoKeys += BuildInfoKey.action("revision") {
-      git.gitHeadCommit.value.getOrElse("Could not evaluate")
+    buildInfoBuildNumber := BuildInfoPlugin.buildNumberTask( baseDirectory.value, 1 ),
+    buildInfoKeys := Seq[BuildInfoKey]( name, version, scalaVersion, sbtVersion ),
+    buildInfoOptions := Seq( BuildInfoOption.ToJson, BuildInfoOption.BuildTime ),
+    buildInfoKeys += BuildInfoKey.action( "revision" ) {
+      git.gitHeadCommit.value.getOrElse( "Could not evaluate" )
     },
     git.useGitDescribe := true,
     git.baseVersion := version.value,
     git.gitTagToVersionNumber := {
-      case VersionRegex(v, "") => Some(v)
-      case VersionRegex(v, "SNAPSHOT") => Some(s"$v-SNAPSHOT")
-      case VersionRegex(v, s) => Some(s"$v-$s-SNAPSHOT")
-      case _ => None
+      case VersionRegex( v, "" )         => Some( v )
+      case VersionRegex( v, "SNAPSHOT" ) => Some( s"$v-SNAPSHOT" )
+      case VersionRegex( v, s )          => Some( s"$v-$s-SNAPSHOT" )
+      case _                             => None
     },
     releaseSnapshotDependencies := {
-      val moduleIds = (managedClasspath in Runtime).value.flatMap(_.get(moduleID.key))
-      val snapshots = moduleIds.filter(m => m.isChanging || m.revision.endsWith("-SNAPSHOT"))
+      val moduleIds = ( managedClasspath in Runtime ).value.flatMap( _.get( moduleID.key ) )
+      val snapshots = moduleIds.filter( m => m.isChanging || m.revision.endsWith( "-SNAPSHOT" ) )
       snapshots
     },
-    releaseVersion := { ver => Version(ver).map(_.withoutQualifier.string).getOrElse(versionFormatError) },
+    releaseVersion := { ver => Version( ver ).map( _.withoutQualifier.string ).getOrElse( versionFormatError ) },
     releaseVersionBump := Version.Bump.default,
     releaseNextVersion := {
-      ver => Version(ver).map(_.bump(releaseVersionBump.value).asSnapshot.string).getOrElse(versionFormatError)
+      ver => Version( ver ).map( _.bump( releaseVersionBump.value ).asSnapshot.string ).getOrElse( versionFormatError )
     },
     releaseUseGlobalVersion := true,
     releaseCrossBuild := false,
-    releaseTagName := s"v${if (releaseUseGlobalVersion.value) (version in ThisBuild).value else version.value}",
-    releaseTagComment := s"Releasing ${if (releaseUseGlobalVersion.value) (version in ThisBuild).value else version.value}",
-    releaseCommitMessage := s"Setting version to ${if (releaseUseGlobalVersion.value) (version in ThisBuild).value else version.value}",
-    releaseVcs := Vcs.detect(baseDirectory.value),
+    releaseTagName := s"v${if ( releaseUseGlobalVersion.value ) ( version in ThisBuild ).value else version.value}",
+    releaseTagComment := s"Releasing ${if ( releaseUseGlobalVersion.value ) ( version in ThisBuild ).value else version.value}",
+    releaseCommitMessage := s"Setting version to ${if ( releaseUseGlobalVersion.value ) ( version in ThisBuild ).value else version.value}",
+    releaseVcs := Vcs.detect( baseDirectory.value ),
     //releaseVcsSign := false,
     releaseVersionFile := baseDirectory.value / "version.sbt",
     releasePublishArtifactsAction := publish.value,
@@ -92,14 +92,14 @@ object S4nReleasePlugin extends AutoPlugin {
     commands += releaseCommand,
 
     ScalariformKeys.preferences := ScalariformKeys.preferences.value
-      .setPreference(AlignSingleLineCaseStatements, true)
-      .setPreference(DoubleIndentClassDeclaration, true)
-      .setPreference(DanglingCloseParenthesis, Force)
-      .setPreference(AlignParameters, true)
-      .setPreference(CompactControlReadability, true)
+      .setPreference( AlignSingleLineCaseStatements, true )
+      .setPreference( DoubleIndentClassDeclaration, true )
+      .setPreference( DanglingCloseParenthesis, Force )
+      .setPreference( AlignParameters, true )
+      .setPreference( CompactControlReadability, true )
       //.setPreference(SpaceInsideBrackets, false)
-      .setPreference(SpaceInsideParentheses, true)
-      .setPreference(SpacesWithinPatternBinders, true)
+      .setPreference( SpaceInsideParentheses, true )
+      .setPreference( SpacesWithinPatternBinders, true )
   )
 
 }

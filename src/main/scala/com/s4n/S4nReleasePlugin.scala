@@ -41,9 +41,11 @@ object S4nReleasePlugin extends AutoPlugin {
 
   override def trigger = allRequirements
 
+  override def requires = plugins.JvmPlugin
+
   override def projectSettings: Seq[Setting[_]] = BuildInfoPlugin.buildInfoScopedSettings( Compile ) ++ Seq(
     buildInfoObject := "BuildInfo",
-    buildInfoPackage := "buildinfo",
+    buildInfoPackage := "com.s4n.build",
     buildInfoUsePackageAsPath := false,
     buildInfoBuildNumber := BuildInfoPlugin.buildNumberTask( baseDirectory.value, 1 ),
     buildInfoKeys := Seq[BuildInfoKey]( name, version, scalaVersion, sbtVersion ),

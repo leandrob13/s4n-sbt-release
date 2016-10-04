@@ -2,6 +2,15 @@
 
 # S4N sbt release process
 
+  S4nRelease es un plugin de sbt que integra varias herramientas para
+  facilitar el proceso de release de los proyectos. Cuenta con 
+  [SBT-Release](http://github.com/sbt/sbt-release) para definir pasos
+  de release base y poder agregar pasos propios de S4nRelease. 
+  
+  Adicionalmente se incluyen los plugins:
+  -[SBT-BuildInfo](http://github.com/sbt/sbt-buildinfo) y [SBT-GIT](http://github.com/sbt/sbt-git) para poder agregar información del versionamiento y commit de la aplicación.
+  -[SBT-Scalariform](https://github.com/sbt/sbt-scalariform) para formatear el código usando [Scalariform](https://github.com/scala-ide/scalariform).  
+
 ### Uso:
 
   Agregar resolver y credenciales en archivo ./project/s4n-release.sbt
@@ -60,23 +69,13 @@
   la configuracion por defecto es la siguiente
 ```scala
   releaseProcess := Seq[ReleaseStep](
-        checkSnapshotDependencies,
-        inquireVersions,
-        runClean,
-        runTest,
-        setAndCommitReleaseVersion,
-        tagRelease,
-        setAndCommitNextVersion,
-        pushChanges
-      )
+    checkSnapshotDependencies,
+    inquireVersions,
+    runClean,
+    runTest,
+    setAndCommitReleaseVersion,
+    tagRelease,
+    setAndCommitNextVersion,
+    pushChanges
+  )
 ```
-
-### Recursos
-
-[SBT-Release](http://github.com/sbt/sbt-release)
-
-[SBT-BuildInfo](http://github.com/sbt/sbt-buildinfo)
-
-[SBT-GIT](http://github.com/sbt/sbt-git)
-
-[SBT-Scalariform](https://github.com/sbt/sbt-scalariform)

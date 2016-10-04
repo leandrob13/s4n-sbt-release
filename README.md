@@ -33,7 +33,7 @@
 
   Y por último se agrega en el build.sbt:
 ```scala
-  (project in file(".")).enablePlugins(S4nReleasePlugin)
+  val root = (project in file(".")).enablePlugins(S4nReleasePlugin)
 ```  
 
 ### Proceso de Release:

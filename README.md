@@ -4,8 +4,8 @@
 
   S4nRelease es un plugin de sbt que integra varias herramientas para
   facilitar el proceso de release de los proyectos. Cuenta con 
-  [SBT-Release](http://github.com/sbt/sbt-release) para definir pasos
-  de release base y poder agregar pasos propios de S4nRelease. 
+  [SBT-Release](http://github.com/sbt/sbt-release) para definir pasos base
+  de release y poder agregar pasos personalizados. 
   
   Adicionalmente se incluyen los plugins:
   -[SBT-BuildInfo](http://github.com/sbt/sbt-buildinfo) y [SBT-GIT](http://github.com/sbt/sbt-git) para poder agregar información del versionamiento y commit de la aplicación.
@@ -73,9 +73,9 @@
     inquireVersions,
     runClean,
     runTest,
-    setAndCommitReleaseVersion,
+    setAndCommitReleaseVersion, //Paso personalizado S4nRelease
     tagRelease,
-    setAndCommitNextVersion,
+    setAndCommitNextVersion, //Paso personalizado S4nRelease
     pushChanges
   )
 ```

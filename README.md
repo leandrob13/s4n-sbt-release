@@ -31,6 +31,11 @@
   addSbtPlugin("com.s4n" % "sbt-s4n-release" % "0.1.3")
 ```
 
+  Y por último se agrega en el build.sbt:
+```scala
+  (project in file(".")).enablePlugins(S4nReleasePlugin)
+```  
+
 ### Proceso de Release:
 
   Para realizar el release con sbt es necesario hacer tracking de la
@@ -163,4 +168,4 @@ case object BuildInfo {
     }
   
   }
-```  
+```

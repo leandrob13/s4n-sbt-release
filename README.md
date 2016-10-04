@@ -1,8 +1,6 @@
-# S4N sbt release process
-
-
-
 ![S4N Logo](http://s4n.co/images/s4n_logo.png)
+
+# S4N sbt release process
 
 ### Uso:
 
@@ -53,7 +51,10 @@
   sbt release
 ```  
 
-  Sbt release te preguntará
+  Se necesitará introducir la nueva version y la version SNAPSHOT en la
+  linea de comandos. Finalmente se realizará el push al master remoto.
+  Se recomienda hacer checkout a develop y subir los cambios inmediatemente
+  después de realizar el release.
 
   El proceso de release se configura con el SettingKey releaseProcess, 
   la configuracion por defecto es la siguiente

@@ -27,7 +27,36 @@
 
 ### Proceso de Release:
 
-  El proceso de release se configura con el SettingKey releaseProcess, la configuracion por defecto es la siguiente
+  Para realizar el release con sbt es necesario hacer tracking de la
+  rama **master** en el repositorio remoto:
+  
+```
+  git branch -u origin/master
+``` 
+
+  Si no existe la rama master en tu local por alguna razón:
+```
+  git branch -u origin/master master
+```
+
+  Se requiere crear el archivo ./version.sbt en la rama develop e 
+  incluir:
+```
+  version in ThisBuild := "0.1.0-SNAPSHOT"
+```  
+  
+  Una vez integrados todos los commits de los features a develop, se 
+  deben seguir los siguientes pasos en el root de tu proyecto:
+```
+  git checkout master
+  git merge develop
+  sbt release
+```  
+
+  Sbt release te preguntará
+
+  El proceso de release se configura con el SettingKey releaseProcess, 
+  la configuracion por defecto es la siguiente
 ```scala
   releaseProcess := Seq[ReleaseStep](
         checkSnapshotDependencies,

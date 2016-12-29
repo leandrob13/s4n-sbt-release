@@ -11,7 +11,7 @@ sbtPlugin := true
 organization := "com.s4n"
 
 //Change to your plugin name
-name := """sbt-s4n-release"""
+name := """s4n-sbt-release"""
 
 scalaVersion := "2.10.4"
 //scalaVersion := "2.11.8"

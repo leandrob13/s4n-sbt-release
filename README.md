@@ -36,6 +36,11 @@
   val root = (project in file(".")).enablePlugins(S4nReleasePlugin)
 ```
 
+  Y por último se agrega en el build.sbt:
+```scala
+  val root = (project in file(".")).enablePlugins(S4nReleasePlugin)
+```  
+
 ### Proceso de Release:
 
   Para realizar el release con sbt es necesario hacer tracking del master local a
@@ -169,4 +174,4 @@ case object BuildInfo {
     }
   
   }
-```  
+```

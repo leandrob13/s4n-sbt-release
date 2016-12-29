@@ -1,7 +1,7 @@
 
 
 //lazy val `sbt-s4n-release` = project in file(".")
-lazy val `sbt-s4n-release` = (project in file(".")).enablePlugins(S4nReleasePlugin)
+lazy val `s4n-sbt-release` = (project in file(".")).enablePlugins(S4nReleasePlugin)
 import sbt._
 //import S4nReleasePlugin._
 
